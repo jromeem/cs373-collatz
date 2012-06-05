@@ -12,12 +12,6 @@
 
 import sys
 
-# ----
-# main
-# ----
-
-collatz_solve(sys.stdin, sys.stdout)
-
 # ------------
 # collatz_read
 # ------------
@@ -104,3 +98,9 @@ def collatz_solve (r, w) :
     while collatz_read(r, a) :
         v = collatz_eval(a[0], a[1])
         collatz_print(w, a[0], a[1], v)
+
+# ----
+# main
+# ----
+
+collatz_solve(sys.stdin, sys.stdout)
