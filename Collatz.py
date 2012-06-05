@@ -10,6 +10,8 @@
 # collatz_read
 # ------------
 
+import sys, math
+
 def collatz_read (r, a) :
     """
     reads two ints into a[0] and a[1]
@@ -39,8 +41,28 @@ def collatz_eval (i, j) :
     """
     assert i > 0
     assert j > 0
-    # <your code>
-    v = 1
+
+    # check ranges
+    if i < j:
+        lower = i
+        upper = j
+    else:
+        lower = j
+        upper = i
+    # go through range and find max cycle length
+    max_cycle = 0
+    for num in range(lower, upper+1):
+        cycle_length = 1
+        # collatz conjecture
+        while num != 1:
+            if num % 2 == 0:
+                num = num / 2
+            else:
+                num = (3*num) + 1
+            cycle_length = cycle_length + 1
+        max_cycle = max(max_cycle, cycle_length)
+        
+    v = max_cycle
     assert v > 0
     return v
 
