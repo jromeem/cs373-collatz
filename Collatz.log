@@ -1,3 +1,9 @@
+commit ce1122ae797f1b79440a76e979954927f3fc4632
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Wed Jun 6 01:16:21 2012 -0500
+
+    added a little optimization using hashmap
+
 commit 2588f957868c46c5e4d4418155e4b10c4d06a31a
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Tue Jun 5 18:18:32 2012 -0500
