@@ -33,9 +33,14 @@ def collatz_read (r, a) :
 # collatz_eval
 # ------------
 
-# hold a dictionary of
-# cycle lengths already seen
-cycle_dict = {}
+# a list whose values will correspond
+# to the cycle length of the index
+# maximum range is 1000000 even though
+# numbers seen in the computation near 1M
+# go well past the maximum
+MAX_RANGE = 1000000
+cycle_list = [None]*MAX_RANGE
+
 def collatz_eval (i, j) :
     """
     i is the beginning of the range, inclusive
@@ -60,38 +65,45 @@ def collatz_eval (i, j) :
         # reference the dictionary if the
         # number's cycle length had been
         # previously calculated
-        if num in cycle_dict:
-            cycle_length = cycle_dict[num]
-            max_cycle = max(max_cycle, cycle_length)
-            continue
+        if num < MAX_RANGE and cycle_list[num] != None:
+            cycle_length = cycle_list[num]
 
-        # implicit else:
-        cycle_length = 1
-        
-        # for each number in the range
-        # keep track of all the numbers
-        # seen in the calculations
-        num_seen = [num]
-        
-        # collatz conjecture
-        while num != 1:
-            if num % 2 == 0:
-                num = num / 2
-            else:
-                num = (3*num) + 1
-            cycle_length = cycle_length + 1
-            num_seen.append(num)
+        # otherwise compute the cycle length normally
+        else:
+            # keep a flag to skip populating the array of seen numbers
+            skip_arr = False
             
-        # assign cycle lengths to number seen
-        len_num_seen = len(num_seen)
-        for x in range(0, len_num_seen):
-            if not num_seen[x] in cycle_dict:
-                cycle_dict[num_seen[x]] = len_num_seen - x
+            cycle_length = 1
+            num_seen = [num]
 
-        # what is the max so far
-        max_cycle = max(max_cycle, cycle_length)
+            c = num
+            # collatz conjecture
+            while c != 1:
+                if c % 2 == 0:
+                    c = c / 2
+                else:
+                    c = (3*c) + 1
+
+                # if the calculated number had previously been
+                # computed skip the array for populating
+                if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
+                    cycle_list[num] = cycle_length + cycle_list[c]
+                    skip_arr = True
+                    break
+
+                # implicit else:
+                num_seen.append(c)
+                cycle_length = cycle_length + 1
+                
+            # populate array
+            if not skip_arr:
+                len_num_seen = len(num_seen)
+                for x in range(0, len_num_seen):
+                    if num_seen[x] < MAX_RANGE:
+                        if cycle_list[num_seen[x]] == None:
+                            cycle_list[num_seen[x]] = len_num_seen - x
         
-    v = max_cycle
+    v = max(cycle_list[lower:upper+1])
     assert v > 0
     return v
 
