@@ -37,6 +37,9 @@ def collatz_read (r, a) :
 # collatz_eval
 # ------------
 
+# hold a dictionary of
+# cycle lengths already seen
+cycle_dict = {}
 def collatz_eval (i, j) :
     """
     i is the beginning of the range, inclusive
@@ -53,10 +56,27 @@ def collatz_eval (i, j) :
     else:
         lower = j
         upper = i
+    
     # go through range and find max cycle length
     max_cycle = 0
     for num in range(lower, upper+1):
+        
+        # reference the dictionary if the
+        # number's cycle length had been
+        # previously calculated
+        if num in cycle_dict:
+            cycle_length = cycle_dict[num]
+            max_cycle = max(max_cycle, cycle_length)
+            continue
+
+        # implicit else:
         cycle_length = 1
+        
+        # for each number in the range
+        # keep track of all the numbers
+        # seen in the calculations
+        num_seen = [num]
+        
         # collatz conjecture
         while num != 1:
             if num % 2 == 0:
@@ -64,6 +84,15 @@ def collatz_eval (i, j) :
             else:
                 num = (3*num) + 1
             cycle_length = cycle_length + 1
+            num_seen.append(num)
+            
+        # assign cycle lengths to number seen
+        len_num_seen = len(num_seen)
+        for x in range(0, len_num_seen):
+            if not num_seen[x] in cycle_dict:
+                cycle_dict[num_seen[x]] = len_num_seen - x
+
+        # what is the max so far
         max_cycle = max(max_cycle, cycle_length)
         
     v = max_cycle
