@@ -1,3 +1,9 @@
+commit 1660980dd8a6462f1460a6ba06e180116d43d20e
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 7 23:07:18 2012 -0500
+
+    best optimization so far: under one second
+
 commit d47dcbb052235bd4a637adb1e1e57d93db1c3aa0
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Wed Jun 6 13:03:53 2012 -0500
