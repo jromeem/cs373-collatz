@@ -86,10 +86,10 @@ def collatz_eval (i, j) :
 
                 # if the calculated number had previously been
                 # computed skip the array for populating
-                if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
-                    cycle_list[num] = cycle_length + cycle_list[c]
-                    skip_arr = True
-                    break
+                #if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
+                #    cycle_list[num] = cycle_length + cycle_list[c]
+                #    skip_arr = True
+                #    break
 
                 # implicit else:
                 num_seen.append(c)

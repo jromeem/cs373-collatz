@@ -1,3 +1,9 @@
+commit d47dcbb052235bd4a637adb1e1e57d93db1c3aa0
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Wed Jun 6 13:03:53 2012 -0500
+
+    better optimization: lazy cache. accepted in Sphere
+
 commit 95600fed718e0dc46dd6494171c2d318a0f2e070
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Wed Jun 6 01:17:31 2012 -0500
