@@ -106,7 +106,7 @@ def collatz_eval (i, j) :
         # reference the dictionary if the
         # number's cycle length had been
         # previously calculated
-        if num < MAX_RANGE and cycle_list[num] != None:
+        if cycle_list[num] != None:
             cycle_length = cycle_list[num]
             break
 
@@ -122,23 +122,60 @@ def collatz_eval (i, j) :
         num_seen = [num]
 
         c = num
+
         # collatz conjecture
         while c != 1:
+            
+            # keep track of the skipped number
+            # and keep a flag if you skipped it
+            c_skip = c
+            skipped_num = False
+            
+            # if its even: half it!
             if c % 2 == 0:
+                
+                # add it to what we've seen
+                # and increment the cycle length
                 c = c / 2
+                
+            # if it's odd skip two steps!
             else:
-                c = (3*c) + 1
+                
+                # take account the number
+                # that were skipped
+                c_skip = (c * 3) + 1
 
-            # if the calculated number had previously been
-            # computed skip the array for populating
-            if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
-                cycle_list[num] = cycle_length + cycle_list[c]
-                skip_arr = True
-                break
+                # skip two steps!
+                # increment twice
+                c = c + (c >> 1) + 1
 
-            # implicit else:
+                # flag!
+                skipped_num = True
+
+            if skipped_num:
+                num_seen.append(c_skip)
+                cycle_length = cycle_length + 1
+
             num_seen.append(c)
             cycle_length = cycle_length + 1
+            
+            # if the calculated number had previously been
+            # computed skip the array for populating
+            if c < MAX_RANGE and cycle_list[c] != None:
+                cycle_list[num] = cycle_length + cycle_list[c]
+
+                if c is 5:
+                    print "num seen", num_seen
+                    print "cycle_list", cycle_list[0:20]                    
+                
+                skip_arr = True
+                break
+            
+            if c_skip < MAX_RANGE and cycle_list[c_skip] != None \
+                 and skipped_num:
+                cycle_list[num] = cycle_length + cycle_list[c_skip] - 1
+                skip_arr = True
+                break
             
         # populate array
         if not skip_arr:
