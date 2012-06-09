@@ -1,3 +1,15 @@
+commit 71cf7f189b82a92db61056280707db35d7c5d07a
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 9 14:25:09 2012 -0500
+
+    a little closer with odd:skip two
+
+commit 45769f4ada244095e0c6676137aa221bc827e260
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 9 13:54:55 2012 -0500
+
+    new branch for implemening odd:skip two
+
 commit d1ffbb3d222bbf2935b87e0bfeb3f92fb16bd11f
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Fri Jun 8 00:08:26 2012 -0500

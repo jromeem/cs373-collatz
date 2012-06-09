@@ -90,7 +90,7 @@ def collatz_eval (i, j) :
     for m in range(1, meta_len+1):
         if META_KEYS[meta_len - m] in arr_range:
             max_cycle = META_DICT[META_KEYS[meta_len - m]]
-            found = True
+            found_meta = True
             break
 
     # go through the range and find
@@ -109,10 +109,6 @@ def collatz_eval (i, j) :
         if cycle_list[num] != None:
             cycle_length = cycle_list[num]
             break
-
-        # implicit else:
-        # otherwise compute the 
-        # cycle length normally
         
         # keep a flag to skip populating
         # the array of seen numbers
@@ -132,40 +128,38 @@ def collatz_eval (i, j) :
             
             # if its even: half it!
             if c % 2 == 0:
-                
-                # add it to what we've seen
-                # and increment the cycle length
                 c = c / 2
                 
             # if it's odd skip two steps!
             else:
                 
                 # take account the number
-                # that were skipped
+                # that was skipped
                 num_skipped = (c * 3) + 1
-
+                
                 # skip two steps!
-                # increment twice
                 c = c + (c >> 1) + 1
-
+                
                 # flag!
                 was_skipped = True
             
-            # FIRST: check if the calculated number had
+            # FIRST: check if the calculated skipped number had
             # previously been computed skip the array for populating
-            if c < MAX_RANGE and cycle_list[c] != None:
-                cycle_list[num] = cycle_length + cycle_list[c]                
+            if was_skipped and num_skipped < MAX_RANGE \
+               and cycle_list[num_skipped] != None:
                 
-                skip_arr = True
-                break
-            
-            if num_skipped < MAX_RANGE and cycle_list[num_skipped] != None \
-               and was_skipped:
-                cycle_list[num] = cycle_length + cycle_list[num_skipped] - 1
+                cycle_list[num] = cycle_length + cycle_list[num_skipped]
                 skip_arr = True
                 break
 
-            # SECOND: if the number was 
+            # SECOND: check if the second number (one after the skip)
+            # had previously been computed then skip the array for populating
+            elif not was_skipped and c < MAX_RANGE and cycle_list[c] != None:
+                cycle_list[num] = cycle_length + cycle_list[c]                
+                skip_arr = True
+                break
+            
+            # FINALLY: take account if a number was skipped
             if was_skipped:
                 num_seen.append(num_skipped)
                 cycle_length = cycle_length + 1
