@@ -41,6 +41,20 @@ def collatz_read (r, a) :
 MAX_RANGE = 1000000
 cycle_list = [None]*MAX_RANGE
 
+# meta cache dictionary holding the sequence
+META_DICT = {
+                1:1, 2:2, 3:8, 6:9, 7:17, 9:20, 18:21, 25:24,
+                27:112, 54:113, 73:116, 97:119, 129:122, 171:125,
+                231:128, 313:131, 327:144, 649:145, 703:171,
+                871:179, 1161:182, 2223:183, 2463:209, 2919:217,
+                3711:238, 6171:262, 10971:268, 13255:276, 17647:279,
+                23529:282, 26623:308, 34239:311, 35655:324, 52527:340,
+                77031:351, 106239:354, 142587:375, 156159:383,
+                216367:386, 230631:443, 410011:449, 511935:470,626331:509,
+                837799:525
+            }
+META_KEYS = sorted(META_DICT.keys())
+
 def collatz_eval (i, j) :
     """
     i is the beginning of the range, inclusive
@@ -57,53 +71,85 @@ def collatz_eval (i, j) :
     else:
         lower = j
         upper = i
-    
-    # go through range and find max cycle length
+
+    assert lower <= upper
+
+    # initialize max_cyce before computing
+    # anything else
     max_cycle = 0
+    
+    # see if the range contains
+    # any of the numbers in the meta sequence
+    found = False
+    meta_len = len(META_KEYS)
+    arr_range = range(lower, upper+1)
+    for m in range(1, meta_len+1):
+        if META_KEYS[meta_len - m] in arr_range:
+            max_cycle = META_DICT[META_KEYS[meta_len - m]]
+            found = True
+            break
+
+    # go through the range and find
+    # the largest cycle length
     for num in range(lower, upper+1):
         
+        # if the number was found
+        # in the meta data then break out
+        if found:
+            break
+
+        # implicit else if:
         # reference the dictionary if the
         # number's cycle length had been
         # previously calculated
         if num < MAX_RANGE and cycle_list[num] != None:
             cycle_length = cycle_list[num]
+            break
 
-        # otherwise compute the cycle length normally
-        else:
-            # keep a flag to skip populating the array of seen numbers
-            skip_arr = False
-            
-            cycle_length = 1
-            num_seen = [num]
-
-            c = num
-            # collatz conjecture
-            while c != 1:
-                if c % 2 == 0:
-                    c = c / 2
-                else:
-                    c = (3*c) + 1
-
-                # if the calculated number had previously been
-                # computed skip the array for populating
-                #if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
-                #    cycle_list[num] = cycle_length + cycle_list[c]
-                #    skip_arr = True
-                #    break
-
-                # implicit else:
-                num_seen.append(c)
-                cycle_length = cycle_length + 1
-                
-            # populate array
-            if not skip_arr:
-                len_num_seen = len(num_seen)
-                for x in range(0, len_num_seen):
-                    if num_seen[x] < MAX_RANGE:
-                        if cycle_list[num_seen[x]] == None:
-                            cycle_list[num_seen[x]] = len_num_seen - x
+        # implicit else:
+        # otherwise compute the 
+        # cycle length normally
         
-    v = max(cycle_list[lower:upper+1])
+        # keep a flag to skip populating
+        # the array of seen numbers
+        skip_arr = False
+        
+        cycle_length = 1
+        num_seen = [num]
+
+        c = num
+        # collatz conjecture
+        while c != 1:
+            if c % 2 == 0:
+                c = c / 2
+            else:
+                c = (3*c) + 1
+
+            # if the calculated number had previously been
+            # computed skip the array for populating
+            if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
+                cycle_list[num] = cycle_length + cycle_list[c]
+                skip_arr = True
+                break
+
+            # implicit else:
+            num_seen.append(c)
+            cycle_length = cycle_length + 1
+            
+        # populate array
+        if not skip_arr:
+            len_num_seen = len(num_seen)
+            for x in range(0, len_num_seen):
+                if num_seen[x] < MAX_RANGE:
+                    if cycle_list[num_seen[x]] == None:
+                        cycle_list[num_seen[x]] = len_num_seen - x
+
+    # meta cache vs. lazy cache
+    if found:
+        v = max_cycle
+    else:
+        v = max(cycle_list[lower:upper+1])
+    
     assert v > 0
     return v
 

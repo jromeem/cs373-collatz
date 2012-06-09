@@ -7,7 +7,7 @@ CS Username: jromeem
 GitHub ID: jromeem
 GitHub Repository Name: cs373-collatz
 Estimated number of hours: 80
-Actual    number of hours:
+Actual    number of hours: 35~
 Comments: I hope I pass...
 
 I attest that I have written every line of code that I have submitted
