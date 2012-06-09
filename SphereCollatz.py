@@ -84,7 +84,7 @@ def collatz_eval (i, j) :
     
     # see if the range contains
     # any of the numbers in the meta sequence
-    found = False
+    found_meta = False
     meta_len = len(META_KEYS)
     arr_range = range(lower, upper+1)
     for m in range(1, meta_len+1):
@@ -99,7 +99,7 @@ def collatz_eval (i, j) :
         
         # if the number was found
         # in the meta data then break out
-        if found:
+        if found_meta:
             break
 
         # implicit else if:
@@ -118,18 +118,17 @@ def collatz_eval (i, j) :
         # the array of seen numbers
         skip_arr = False
         
-        cycle_length = 1
-        num_seen = [num]
-
         c = num
-
+        num_seen = [num]
+        cycle_length = 1
+        
         # collatz conjecture
         while c != 1:
             
             # keep track of the skipped number
             # and keep a flag if you skipped it
-            c_skip = c
-            skipped_num = False
+            num_skipped = c
+            was_skipped = False
             
             # if its even: half it!
             if c % 2 == 0:
@@ -143,39 +142,36 @@ def collatz_eval (i, j) :
                 
                 # take account the number
                 # that were skipped
-                c_skip = (c * 3) + 1
+                num_skipped = (c * 3) + 1
 
                 # skip two steps!
                 # increment twice
                 c = c + (c >> 1) + 1
 
                 # flag!
-                skipped_num = True
-
-            if skipped_num:
-                num_seen.append(c_skip)
-                cycle_length = cycle_length + 1
-
-            num_seen.append(c)
-            cycle_length = cycle_length + 1
+                was_skipped = True
             
-            # if the calculated number had previously been
-            # computed skip the array for populating
+            # FIRST: check if the calculated number had
+            # previously been computed skip the array for populating
             if c < MAX_RANGE and cycle_list[c] != None:
-                cycle_list[num] = cycle_length + cycle_list[c]
-
-                if c is 5:
-                    print "num seen", num_seen
-                    print "cycle_list", cycle_list[0:20]                    
+                cycle_list[num] = cycle_length + cycle_list[c]                
                 
                 skip_arr = True
                 break
             
-            if c_skip < MAX_RANGE and cycle_list[c_skip] != None \
-                 and skipped_num:
-                cycle_list[num] = cycle_length + cycle_list[c_skip] - 1
+            if num_skipped < MAX_RANGE and cycle_list[num_skipped] != None \
+               and was_skipped:
+                cycle_list[num] = cycle_length + cycle_list[num_skipped] - 1
                 skip_arr = True
                 break
+
+            # SECOND: if the number was 
+            if was_skipped:
+                num_seen.append(num_skipped)
+                cycle_length = cycle_length + 1
+
+            num_seen.append(c)
+            cycle_length = cycle_length + 1
             
         # populate array
         if not skip_arr:
@@ -186,7 +182,7 @@ def collatz_eval (i, j) :
                         cycle_list[num_seen[x]] = len_num_seen - x
 
     # meta cache vs. lazy cache
-    if found:
+    if found_meta:
         v = max_cycle
     else:
         v = max(cycle_list[lower:upper+1])
