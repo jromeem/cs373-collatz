@@ -1,3 +1,15 @@
+commit 1d2978d15899c53923a4ad7c5a821c59b25b065b
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 9 14:03:42 2012 -0500
+
+    SphereCollatz and Collatz eval() are congruent; updated acceptance tests, readme, gitlog
+
+commit d1ffbb3d222bbf2935b87e0bfeb3f92fb16bd11f
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Fri Jun 8 00:08:26 2012 -0500
+
+    added the public acceptance tests
+
 commit 1660980dd8a6462f1460a6ba06e180116d43d20e
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Thu Jun 7 23:07:18 2012 -0500

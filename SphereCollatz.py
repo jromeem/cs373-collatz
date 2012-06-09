@@ -106,7 +106,7 @@ def collatz_eval (i, j) :
         # reference the dictionary if the
         # number's cycle length had been
         # previously calculated
-        if num < MAX_RANGE and cycle_list[num] != None:
+        if cycle_list[num] != None:
             cycle_length = cycle_list[num]
             break
 
@@ -131,7 +131,7 @@ def collatz_eval (i, j) :
 
             # if the calculated number had previously been
             # computed skip the array for populating
-            if c < MAX_RANGE and num < MAX_RANGE and cycle_list[c] != None:
+            if c < MAX_RANGE and cycle_list[c] != None:
                 cycle_list[num] = cycle_length + cycle_list[c]
                 skip_arr = True
                 break
