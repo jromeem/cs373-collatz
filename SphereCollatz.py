@@ -76,6 +76,11 @@ def collatz_eval (i, j) :
         lower = j
         upper = i
 
+    # If lower <= upper/2,
+    # then max_cycle_length(lower, upper) = max_cycle_length(lower, upper/2)
+    if lower <= (upper / 2):
+        lower = upper / 2
+
     assert lower <= upper
 
     # initialize max_cyce before computing
