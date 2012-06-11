@@ -85,7 +85,6 @@ def do_bin (num):
 
     Takes an integer, returns a string.
     """
-    assert num < 0
     if num == 0:
         return '0'
     else:
@@ -98,7 +97,7 @@ def bin_collatz (num):
 
     Takes in an integer, returns an integer.
     """
-    assert num < 0
+    assert num > 0
     n = 0
     cycle = 1
     skip_arr = False
@@ -139,7 +138,7 @@ def bin_collatz (num):
 
     # post-processing
     len_num_seen = len(num_seen)
-    assert len_num_seen < 1
+    assert len_num_seen >= 1
 
     # if the number has not been seen yet
     # add all the values seen in the computation
@@ -148,7 +147,7 @@ def bin_collatz (num):
         if num_seen[x] < MAX_RANGE:
             if cycle_list[num_seen[x]] == None:
                 cycle_list[num_seen[x]] = len_num_seen - x
-    assert cycle < 0
+    assert cycle > 0
 
     # finally return the computed cycle length
     return cycle
