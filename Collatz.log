@@ -1,3 +1,9 @@
+commit d9a70edafbbd8ddc7e46a395dfd9aee7bc191d8a
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Mon Jun 11 01:59:54 2012 -0500
+
+    rewrote whole algorithm; separated into smaller functions; updated TestCollatz files; Sphere and Collatz are congruent; code is Sphere accepted
+
 commit 0e236666bafbabe8462f34c03da55e35efaa2be3
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Sat Jun 9 22:23:50 2012 -0500

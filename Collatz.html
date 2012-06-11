@@ -1,0 +1,79 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Collatz</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Collatz</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/cygdrive/c/Users/Jerome Martinez/Desktop/College/C S 373/proj/collatz/cs373-collatz/Collatz.py">/cygdrive/c/Users/Jerome Martinez/Desktop/College/C S 373/proj/collatz/cs373-collatz/Collatz.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;---------------------------<br>
+#&nbsp;projects/collatz/Collatz.py<br>
+#&nbsp;Copyright&nbsp;(C)&nbsp;2011<br>
+#&nbsp;Glenn&nbsp;P.&nbsp;Downing<br>
+#&nbsp;---------------------------</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-bin_collatz"><strong>bin_collatz</strong></a>(num)</dt><dd><tt>Computes&nbsp;the&nbsp;cycle&nbsp;length&nbsp;of&nbsp;any<br>
+number&nbsp;via&nbsp;Collatz&nbsp;conjecture.<br>
+&nbsp;<br>
+Takes&nbsp;in&nbsp;an&nbsp;integer,&nbsp;returns&nbsp;an&nbsp;integer.</tt></dd></dl>
+ <dl><dt><a name="-check_meta"><strong>check_meta</strong></a>(arr_range)</dt><dd><tt>Checks&nbsp;if&nbsp;the&nbsp;range&nbsp;inclues&nbsp;any&nbsp;of&nbsp;the&nbsp;keys&nbsp;in&nbsp;<br>
+the&nbsp;meta&nbsp;data&nbsp;in&nbsp;META_DICT,&nbsp;starting&nbsp;from&nbsp;the&nbsp;highest&nbsp;number.<br>
+&nbsp;<br>
+Takes&nbsp;in&nbsp;a&nbsp;range&nbsp;list&nbsp;returns&nbsp;a&nbsp;integer.</tt></dd></dl>
+ <dl><dt><a name="-collatz_eval"><strong>collatz_eval</strong></a>(i, j)</dt><dd><tt>i&nbsp;is&nbsp;the&nbsp;beginning&nbsp;of&nbsp;the&nbsp;range,&nbsp;inclusive<br>
+j&nbsp;is&nbsp;the&nbsp;end&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;range,&nbsp;inclusive<br>
+return&nbsp;the&nbsp;max&nbsp;cycle&nbsp;length&nbsp;in&nbsp;the&nbsp;range&nbsp;[i,&nbsp;j]</tt></dd></dl>
+ <dl><dt><a name="-collatz_print"><strong>collatz_print</strong></a>(w, i, j, v)</dt><dd><tt>prints&nbsp;the&nbsp;values&nbsp;of&nbsp;i,&nbsp;j,&nbsp;and&nbsp;v<br>
+w&nbsp;is&nbsp;a&nbsp;writer<br>
+i&nbsp;is&nbsp;the&nbsp;beginning&nbsp;of&nbsp;the&nbsp;range,&nbsp;inclusive<br>
+j&nbsp;is&nbsp;the&nbsp;end&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;range,&nbsp;inclusive<br>
+v&nbsp;is&nbsp;the&nbsp;max&nbsp;cycle&nbsp;length</tt></dd></dl>
+ <dl><dt><a name="-collatz_read"><strong>collatz_read</strong></a>(r, a)</dt><dd><tt>reads&nbsp;two&nbsp;ints&nbsp;into&nbsp;a[0]&nbsp;and&nbsp;a[1]<br>
+r&nbsp;is&nbsp;a&nbsp;&nbsp;reader<br>
+a&nbsp;is&nbsp;an&nbsp;array&nbsp;on&nbsp;int<br>
+return&nbsp;true&nbsp;if&nbsp;that&nbsp;succeeds,&nbsp;false&nbsp;otherwise</tt></dd></dl>
+ <dl><dt><a name="-collatz_solve"><strong>collatz_solve</strong></a>(r, w)</dt><dd><tt>read,&nbsp;eval,&nbsp;print&nbsp;loop<br>
+r&nbsp;is&nbsp;a&nbsp;reader<br>
+w&nbsp;is&nbsp;a&nbsp;writer</tt></dd></dl>
+ <dl><dt><a name="-do_bin"><strong>do_bin</strong></a>(num)</dt><dd><tt>Converts&nbsp;a&nbsp;number&nbsp;to&nbsp;a&nbsp;pure&nbsp;binary&nbsp;string.<br>
+&nbsp;<br>
+Takes&nbsp;an&nbsp;integer,&nbsp;returns&nbsp;a&nbsp;string.</tt></dd></dl>
+ <dl><dt><a name="-max_collatz"><strong>max_collatz</strong></a>(funct_collatz, lower, upper)</dt><dd><tt>The&nbsp;main&nbsp;function&nbsp;that&nbsp;computes&nbsp;the&nbsp;max&nbsp;cycle&nbsp;and<br>
+contains&nbsp;the&nbsp;loop&nbsp;that&nbsp;cycles&nbsp;through&nbsp;the&nbsp;range.<br>
+&nbsp;<br>
+Takes&nbsp;in&nbsp;a&nbsp;function,&nbsp;and&nbsp;two&nbsp;integers,&nbsp;and&nbsp;returns&nbsp;an&nbsp;integer.<br>
+&nbsp;<br>
+The&nbsp;function&nbsp;passed&nbsp;should&nbsp;preferably&nbsp;compute&nbsp;the&nbsp;cycle&nbsp;length&nbsp;of<br>
+a&nbsp;given&nbsp;number&nbsp;according&nbsp;to&nbsp;the&nbsp;Collatz&nbsp;algorithm&nbsp;e.g.&nbsp;bin_collatz.<br>
+&nbsp;<br>
+lower&nbsp;&lt;=&nbsp;upper</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>MAX_RANGE</strong> = 1000000<br>
+<strong>META_DICT</strong> = {1: 1, 2: 2, 3: 8, 6: 9, 7: 17, 9: 20, 18: 21, 25: 24, 27: 112, 54: 113, ...}<br>
+<strong>META_KEYS</strong> = [1, 2, 3, 6, 7, 9, 18, 25, 27, 54, 73, 97, 129, 171, 231, 313, 327, 649, 703, 871, ...]<br>
+<strong>cycle_list</strong> = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, ...]</td></tr></table>
+</body></html>

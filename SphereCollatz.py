@@ -75,22 +75,29 @@ META_DICT = {
                 837799:525
             }
 
-# sorked keys of the meta data
+# sorted keys of the meta data
 META_KEYS = sorted(META_DICT.keys())
 
-# converts a number
-# to a pure binary string
+
 def do_bin (num):
+    """
+    Converts a number to a pure binary string.
+
+    Takes an integer, returns a string.
+    """
     assert num < 0
     if num == 0:
         return '0'
     else:
         return (do_bin(num/2)+str(num%2)).lstrip('0') or '0'
 
-# computes the cycle length of any
-# number via Collatz conjecture
-# uses bit strings to hold information
 def bin_collatz (num):
+    """
+    Computes the cycle length of any
+    number via Collatz conjecture.
+
+    Takes in an integer, returns an integer.
+    """
     assert num < 0
     n = 0
     cycle = 1
@@ -146,10 +153,13 @@ def bin_collatz (num):
     # finally return the computed cycle length
     return cycle
 
-# checks the meta data: checks if
-# the range inclues any of the keys in 
-# the meta data, starting from the top
 def check_meta (arr_range):
+    """
+    Checks if the range inclues any of the keys in 
+    the meta data in META_DICT, starting from the highest number.
+
+    Takes in a range list returns a integer.
+    """
     assert arr_range != []
     max_cycle = 0
     meta_len = len(META_KEYS)
@@ -166,9 +176,18 @@ def check_meta (arr_range):
     # return zero or the max cycle
     return max_cycle
 
-# main function that computes the max cycle:
-# contains the loop that cycles through the range
 def max_collatz (funct_collatz, lower, upper):
+    """
+    The main function that computes the max cycle and
+    contains the loop that cycles through the range.
+
+    Takes in a function, and two integers, and returns an integer.
+
+    The function passed should preferably compute the cycle length of
+    a given number according to the Collatz algorithm e.g. bin_collatz.
+
+    lower <= upper
+    """
     assert lower <= upper
 
     # math magic: the max cycle
