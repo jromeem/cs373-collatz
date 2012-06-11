@@ -1,3 +1,15 @@
+commit 0e236666bafbabe8462f34c03da55e35efaa2be3
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 9 22:23:50 2012 -0500
+
+    little more optimization
+
+commit 0833e8b4523878fd7b0eb03b8f596f318bce2206
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 9 14:09:39 2012 -0500
+
+    small changes to conditionals -- going to compare branches now
+
 commit 1d2978d15899c53923a4ad7c5a821c59b25b065b
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Sat Jun 9 14:03:42 2012 -0500

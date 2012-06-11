@@ -34,14 +34,31 @@ def collatz_read (r, a) :
 # ------------
 
 # a list whose values will correspond
-# to the cycle length of the index
+# to the cycle lengths of the index
 # maximum range is 1000000 even though
 # numbers seen in the computation near 1M
 # go well past the maximum
+
+# the first starting value to reach past 
+# 1M in its cycle is 1819; going to 1276936
+
+# highest starting value < 1M that reaches
+# the highest number in its cycle of all
+# starting values is 704511; going to 56991483520
 MAX_RANGE = 1000000
 cycle_list = [None]*MAX_RANGE
 
 # meta cache dictionary holding the sequence
+# keys correspond to the sequence here: http://oeis.org/A006877
+# values correspond to the sequence here: http://oeis.org/A006878
+
+# these values for the starting value set new
+# records for number of steps to reach 1
+# <key = starting number> : <value = number of cycles>
+
+# using this data, any given range have a max cycle
+# correpsonding the to the value of highest key in
+# that range
 META_DICT = {
                 1:1, 2:2, 3:8, 6:9, 7:17, 9:20, 18:21, 25:24,
                 27:112, 54:113, 73:116, 97:119, 129:122, 171:125,
@@ -53,7 +70,140 @@ META_DICT = {
                 216367:386, 230631:443, 410011:449, 511935:470,626331:509,
                 837799:525
             }
+
+# sorked keys of the meta data
 META_KEYS = sorted(META_DICT.keys())
+
+# converts a number
+# to a pure binary string
+def do_bin (num):
+    assert num < 0
+    if num == 0:
+        return '0'
+    else:
+        return (do_bin(num/2)+str(num%2)).lstrip('0') or '0'
+
+# computes the cycle length of any
+# number via Collatz conjecture
+# uses bit strings to hold information
+def bin_collatz (num):
+    assert num < 0
+    n = 0
+    cycle = 1
+    skip_arr = False
+    num_seen = [num]
+
+    # convert the number to a bit string
+    bit_str = do_bin(num)
+
+    # bit string manipulation version
+    # of the collatz conjecture algorithm
+    while bit_str != "1":
+
+        # even case: divide by zero
+        # i.e. remove traling zeros
+        if bit_str[-1] == "0":
+            bit_str = bit_str[:-1]
+
+        # odd case: triple and add 1
+        # i.e. append 1 to the end
+        # add that number to the previous bit string
+        # (the bit string without appending 1)
+        # addition done via binary addition
+        else:
+            bit_one = bit_str + "1"
+            bit_str = do_bin(int(bit_one,2) + int(bit_str,2))
+
+        # also keep a decimal form
+        # to check if exists in the lazy cache
+        n = int(bit_str, 2)
+        if n < MAX_RANGE and cycle_list[n] != None:
+            cycle_list[num] = cycle + cycle_list[n]
+            return cycle + cycle_list[n]
+
+        # for the computed number so far
+        # append it to a list and increase the cycle
+        num_seen.append(n)
+        cycle += 1
+
+    # post-processing
+    len_num_seen = len(num_seen)
+    assert len_num_seen < 1
+
+    # if the number has not been seen yet
+    # add all the values seen in the computation
+    # into the lazy cache
+    for x in range(0, len_num_seen):
+        if num_seen[x] < MAX_RANGE:
+            if cycle_list[num_seen[x]] == None:
+                cycle_list[num_seen[x]] = len_num_seen - x
+    assert cycle < 0
+
+    # finally return the computed cycle length
+    return cycle
+
+# checks the meta data: checks if
+# the range inclues any of the keys in 
+# the meta data, starting from the top
+def check_meta (arr_range):
+    assert arr_range != []
+    max_cycle = 0
+    meta_len = len(META_KEYS)
+
+    # starting from the highest number
+    for m in range(1, meta_len+1):
+
+        # cycle through the array of keys
+        # and check if its in the given range
+        if META_KEYS[meta_len - m] in arr_range:
+            max_cycle = META_DICT[META_KEYS[meta_len - m]]
+            break
+
+    # return zero or the max cycle
+    return max_cycle
+
+# main function that computes the max cycle:
+# contains the loop that cycles through the range
+def max_collatz (funct_collatz, lower, upper):
+    assert lower <= upper
+
+    # math magic: the max cycle
+    # will always be found after the
+    # mid-way point given the range is
+    # from 1 to any integer x, where x < 1
+    # cuts a lot of computation for some ranges
+    if lower <= (upper / 2):
+        lower = upper / 2
+
+    # check if the range is on the same number
+    elif lower is upper:
+        return funct_collatz(upper)
+
+    # check the meta data
+    arr_range = range(lower, upper+1)
+    max_cycle = check_meta(arr_range)
+
+    # if the answer wasn't in the meta data
+    # find the max traditionally
+    if max_cycle != 0:
+        return max_cycle
+    else:
+        for num in arr_range:
+            
+            # if the cycle for the current number
+            # in the range is in the lazy-cache, fetch it
+            if cycle_list[num] != None:
+                cycle = cycle_list[num]
+
+            # otherwise, go through and compute
+            # the cycle traditionally
+            # then add it to the laz-cache
+            else:
+                cycle = funct_collatz(num)
+                cycle_list[num] = cycle
+
+    # find the max in the lazy-cache
+    return max(cycle_list[lower:upper+1])
 
 def collatz_eval (i, j) :
     """
@@ -64,96 +214,20 @@ def collatz_eval (i, j) :
     assert i > 0
     assert j > 0
 
-    # check ranges
+    # desginate the ranges
     if i < j:
         lower = i
         upper = j
     else:
         lower = j
         upper = i
-        
-    # If lower <= upper/2,
-    # then max_cycle_length(lower, upper) = max_cycle_length(lower, upper/2)
-    if lower <= (upper / 2):
-        lower = upper / 2
 
     assert lower <= upper
 
-    # initialize max_cyce before computing
-    # anything else
-    max_cycle = 0
-    
-    # see if the range contains
-    # any of the numbers in the meta sequence
-    found = False
-    meta_len = len(META_KEYS)
-    arr_range = range(lower, upper+1)
-    for m in range(1, meta_len+1):
-        if META_KEYS[meta_len - m] in arr_range:
-            max_cycle = META_DICT[META_KEYS[meta_len - m]]
-            found = True
-            break
-
-    # go through the range and find
-    # the largest cycle length
-    for num in range(lower, upper+1):
-        
-        # if the number was found
-        # in the meta data then break out
-        if found:
-            break
-
-        # implicit else if:
-        # reference the dictionary if the
-        # number's cycle length had been
-        # previously calculated
-        if cycle_list[num] != None:
-            cycle_length = cycle_list[num]
-            break
-
-        # implicit else:
-        # otherwise compute the 
-        # cycle length normally
-        
-        # keep a flag to skip populating
-        # the array of seen numbers
-        skip_arr = False
-        
-        cycle_length = 1
-        num_seen = [num]
-
-        c = num
-        # collatz conjecture
-        while c != 1:
-            if c % 2 == 0:
-                c = c / 2
-            else:
-                c = (3*c) + 1
-
-            # if the calculated number had previously been
-            # computed skip the array for populating
-            if c < MAX_RANGE and cycle_list[c] != None:
-                cycle_list[num] = cycle_length + cycle_list[c]
-                skip_arr = True
-                break
-
-            # implicit else:
-            num_seen.append(c)
-            cycle_length = cycle_length + 1
-            
-        # populate array
-        if not skip_arr:
-            len_num_seen = len(num_seen)
-            for x in range(0, len_num_seen):
-                if num_seen[x] < MAX_RANGE:
-                    if cycle_list[num_seen[x]] == None:
-                        cycle_list[num_seen[x]] = len_num_seen - x
-
-    # meta cache vs. lazy cache
-    if found:
-        v = max_cycle
-    else:
-        v = max(cycle_list[lower:upper+1])
+    # find the max of the range given
+    # pass in the function bin_collatz
+    # that will me used in the computation
+    v = max_collatz(bin_collatz, lower, upper)
     
     assert v > 0
     return v
